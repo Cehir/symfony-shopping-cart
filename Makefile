@@ -8,6 +8,7 @@ PHP_CONT = $(DOCKER_COMP) exec php
 PHP      = $(PHP_CONT) php
 COMPOSER = $(PHP_CONT) composer
 SYMFONY  = $(PHP) bin/console
+PHPSTAN  = $(PHP) vendor/bin/phpstan
 
 # Misc
 .DEFAULT_GOAL = help
@@ -39,9 +40,13 @@ sh: ## Connect to the FrankenPHP container
 	@$(PHP_CONT) sh
 
 test: ## Start tests with phpunit, pass the parameter "c=" to add options to phpunit, example: make test c="--group e2e --stop-on-failure"
+	$(MAKE) up
 	@$(eval c ?=)
 	@$(DOCKER_COMP) exec -e APP_ENV=test php bin/phpunit $(c)
 
+phpstan: ## run codebase analysis, pass the parameter "c=" to add options to phpstan, example: c="analyse src test --level=6"
+	@$(eval c ?=)
+	@$(PHPSTAN) $(c)
 
 ## —— Composer 🧙 ——————————————————————————————————————————————————————————————
 composer: ## Run composer, pass the parameter "c=" to run a given command, example: make composer c='req symfony/orm-pack'
@@ -66,11 +71,17 @@ routes: sf
 autowires: c="debug:autowiring" ## list autowiring services
 autowires: sf
 
-entity: c="make:entity --regenerate" ## create or update an entity
+entity: c=make:entity --regenerate ## create or update an entity
 entity: sf
 
-migration: c="make:migration" ## create migration
+factory: c=make:factory --all-fields ## create factory template(s)
+factory: sf
+
+loadfixtures: c=doctrine:fixtures:load --purge-with-truncate ## dumps all database data & loads fixtures
+loadfixtures: sf
+
+migration: c=make:migration ## create migration
 migration: sf
 
-migrate: c="doctrine:migrations:migrate" ## run migrations
+migrate: c=doctrine:migrations:migrate ## run migrations
 migrate: sf
