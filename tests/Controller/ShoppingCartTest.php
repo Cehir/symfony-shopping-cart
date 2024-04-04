@@ -260,6 +260,53 @@ class ShoppingCartTest extends ApiTestCase
         ProductFactory::assert()->count(1);
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
+    public function testUpdateShoppingCartProductWithInvalidData(): void
+    {
+        $product = ProductFactory::createOne();
+        $shoppingCart = ShoppingCartFactory::createOne();
+        ShoppingCartProductFactory::createOne([
+            'product' => $product,
+            'shoppingCart' => $shoppingCart,
+        ]);
+
+        $productId = $product->getId()?->toRfc4122();
+        $shoppingCartId = $shoppingCart->getId()?->toRfc4122();
+
+        $response = static::createClient()->request(
+            'PUT',
+            self::SHOPPING_CARTS_API_ENDPOINT . "/" . $shoppingCartId . '/products/' . $productId,
+            ['body' => json_encode([
+                'name' => 'newName',
+            ])]
+        );
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+        $this->assertJsonContains([
+            'status' => Response::$statusTexts[Response::HTTP_BAD_REQUEST],
+            'message' => 'Validation failed',
+            'errors' => [
+                [
+                    "property" => "[name]",
+                    "message" => "This field was not expected."
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     public function testUpdateShoppingCartProduct(): void
     {
         $product = ProductFactory::createOne();
@@ -276,14 +323,16 @@ class ShoppingCartTest extends ApiTestCase
             'PUT',
             self::SHOPPING_CARTS_API_ENDPOINT . "/" . $shoppingCartId . '/products/' . $productId,
             ['body' => json_encode([
-                'name' => 'newName',
-                'price' => 'newPrice'
+                'product' => [
+                    'name' => 'newName',
+                    'price' => 'newPrice',
+                ]
             ])]
         );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
 
-        $this->assertEquals('newName', $product->getName());
-        $this->assertEquals('newPrice', $product->getPrice());
+        self::assertEquals('newName', $product->getName());
+        self::assertEquals('newPrice', $product->getPrice());
     }
 }

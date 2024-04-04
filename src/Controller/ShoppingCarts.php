@@ -6,6 +6,7 @@ use App\Entity\Product;
 use App\Entity\ShoppingCart;
 use App\Entity\ShoppingCartProduct;
 use App\Repository\ShoppingCartRepository;
+use App\Service\ProductValidator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
@@ -18,6 +19,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Serializer\Context\Normalizer\ObjectNormalizerContextBuilder;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 #[Route('/api/v1/shopping_carts', name: 'shopping_carts_', format: 'json')]
 class ShoppingCarts extends AbstractController
@@ -258,7 +260,7 @@ class ShoppingCarts extends AbstractController
         ],
         methods: ['PUT']
     )]
-    public function editProduct(EntityManagerInterface $entityManager, string $id, string $productID, Request $request): JsonResponse
+    public function editProduct(EntityManagerInterface $entityManager, string $id, string $productID, Request $request, ProductValidator $validator): JsonResponse
     {
         $requestData = $request->toArray();
 
@@ -266,7 +268,7 @@ class ShoppingCarts extends AbstractController
             /* @var ?ShoppingCart $shoppingCart */
             $shoppingCart = $entityManager->find(ShoppingCart::class, $id);
             $product = $entityManager->find(Product::class, $productID);
-        } catch (OptimisticLockException | ORMException $e) {
+        } catch (OptimisticLockException|ORMException $e) {
             return $this->handleError($e);
         }
 
@@ -278,12 +280,16 @@ class ShoppingCarts extends AbstractController
             return $this->productNotFoundResponse();
         }
 
-        //todo add validation
-        if (isset($requestData['name']) && is_string($requestData['name'])) {
-            $product->setName($requestData['name']);
+        $errors = $validator->validateUpdate($requestData);
+        if (count($errors) > 0) {
+            return $this->handleValidationErrors($errors);
         }
-        if (isset($requestData['price']) && is_string($requestData['price'])) {
-            $product->setPrice($requestData['price']);
+
+        if (isset($requestData['product']['name'])) {
+            $product->setName($requestData['product']['name']);
+        }
+        if (isset($requestData['product']['price'])) {
+            $product->setPrice($requestData['product']['price']);
         }
 
         $entityManager->flush();
@@ -343,5 +349,22 @@ class ShoppingCarts extends AbstractController
             'status' => Response::$statusTexts[Response::HTTP_NOT_FOUND],
             'msg' => 'product not found'
         ], Response::HTTP_NOT_FOUND);
+    }
+
+    protected function handleValidationErrors(ConstraintViolationListInterface $errors): JsonResponse
+    {
+        $data = [];
+        foreach ($errors as $error) {
+            $data[] = [
+                'property' => $error->getPropertyPath(),
+                'message' => $error->getMessage(),
+            ];
+        }
+
+        return $this->json([
+            'status' =>  Response::$statusTexts[Response::HTTP_BAD_REQUEST],
+            'message' => 'Validation failed',
+            'errors' => $data,
+        ], Response::HTTP_BAD_REQUEST);
     }
 }

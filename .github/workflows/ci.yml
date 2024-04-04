@@ -38,29 +38,29 @@ jobs:
       -
         name: Start services
         run: docker compose up --wait --no-build
+        timeout-minutes: 5
       -
         name: Check HTTP reachability
-        run: curl -v --fail-with-body http://localhost
+        run: curl -v --fail-with-body http://localhost/api/v1/shopping_carts
       -
         name: Check HTTPS reachability
-        if: false # Remove this line when the homepage will be configured, or change the path to check
-        run: curl -vk --fail-with-body https://localhost
+        run: curl -vk --fail-with-body https://localhost/api/v1/shopping_carts
       -
         name: Create test database
-        if: false # Remove this line if Doctrine ORM is installed
         run: docker compose exec -T php bin/console -e test doctrine:database:create
       -
         name: Run migrations
-        if: false # Remove this line if Doctrine Migrations is installed
         run: docker compose exec -T php bin/console -e test doctrine:migrations:migrate --no-interaction
       -
         name: Run PHPUnit
-        if: false # Remove this line if PHPUnit is installed
         run: docker compose exec -T php bin/phpunit
       -
         name: Doctrine Schema Validator
-        if: false # Remove this line if Doctrine ORM is installed
         run: docker compose exec -T php bin/console -e test doctrine:schema:validate
+      -
+        name: Run PHPStan
+        run: make phpstan
+        
   lint:
     name: Docker Lint
     runs-on: ubuntu-latest
