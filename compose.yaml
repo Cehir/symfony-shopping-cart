@@ -33,6 +33,12 @@ services:
       - target: 443
         published: ${HTTP3_PORT:-443}
         protocol: udp
+    healthcheck:
+      test: "curl -I http://localhost"
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
 
 # Mercure is installed as a Caddy module, prevent the Flex recipe from installing another service
 ###> symfony/mercure-bundle ###
