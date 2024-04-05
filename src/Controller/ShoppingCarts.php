@@ -11,15 +11,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
-use Symfony\Component\Serializer\Context\Normalizer\ObjectNormalizerContextBuilder;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 #[Route('/api/v1/shopping_carts', name: 'shopping_carts_', format: 'json')]
 class ShoppingCarts extends AbstractController
@@ -39,7 +36,7 @@ class ShoppingCarts extends AbstractController
     {
         $response = new JsonResponse();
         $response->headers->set('Access-Control-Allow-Origin', '*'); //TODO should be configured
-        $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, DELETE');
+        $response->headers->set('Access-Control-Allow-Methods', 'GET, PATCH, POST, DELETE');
         $response->headers->set('Access-Control-Allow-Headers', 'Content-Type');
         return $response;
     }
@@ -87,7 +84,7 @@ class ShoppingCarts extends AbstractController
 
         $shoppingCart = $repository->find($id);
         if ($shoppingCart === null) {
-            return $this->shoppingCartNotFoundResponse();
+            return $this->handleShoppingCartNotFound();
         }
 
         $data = [
@@ -110,7 +107,7 @@ class ShoppingCarts extends AbstractController
             $repository->removeByID($id);
 
         } catch (NotFoundHttpException) {
-            return $this->shoppingCartNotFoundResponse();
+            return $this->handleShoppingCartNotFound();
 
         } catch (OptimisticLockException|ORMException $e) {
             return $this->handleError($e);
@@ -130,7 +127,7 @@ class ShoppingCarts extends AbstractController
         /** @var ?ShoppingCart $shoppingCart */
         $shoppingCart = $repository->find($id);
         if ($shoppingCart === null) {
-            return $this->shoppingCartNotFoundResponse();
+            return $this->handleShoppingCartNotFound();
         }
 
         /** @var ArrayCollection<int,ShoppingCartProduct> $products */
@@ -166,12 +163,12 @@ class ShoppingCarts extends AbstractController
             /* @var ?ShoppingCart $shoppingCart */
             $shoppingCart = $entityManager->find(ShoppingCart::class, $id);
             if ($shoppingCart === null) {
-                return $this->shoppingCartNotFoundResponse();
+                return $this->handleShoppingCartNotFound();
             }
 
             $product = $entityManager->find(Product::class, $productID);
             if ($product === null) {
-                return $this->productNotFoundResponse();
+                return $this->handleProductNotFound();
             }
 
             $shoppingCart->addOneProduct($product);
@@ -213,12 +210,12 @@ class ShoppingCarts extends AbstractController
             /* @var ?ShoppingCart $shoppingCart */
             $shoppingCart = $entityManager->find(ShoppingCart::class, $id);
             if ($shoppingCart === null) {
-                return $this->shoppingCartNotFoundResponse();
+                return $this->handleShoppingCartNotFound();
             }
 
             $product = $entityManager->find(Product::class, $productID);
             if ($product === null) {
-                return $this->productNotFoundResponse();
+                return $this->handleProductNotFound();
             }
 
             $shoppingCartProduct = $shoppingCart->removeOneProduct($product);
@@ -276,11 +273,11 @@ class ShoppingCarts extends AbstractController
 
         //validate input
         if ($shoppingCart === null) {
-            return $this->shoppingCartNotFoundResponse();
+            return $this->handleShoppingCartNotFound();
         }
 
         if ($product === null) {
-            return $this->productNotFoundResponse();
+            return $this->handleProductNotFound();
         }
 
         $errors = $validator->validateUpdate($requestData);
@@ -311,69 +308,5 @@ class ShoppingCarts extends AbstractController
         ];
 
         return $this->json($data, context: $this->buildObjectNormalizerContext('shop:item'));
-    }
-
-    /**
-     * @param array<string>|null|string $groups
-     * @return array<string|mixed>
-     */
-    protected function buildObjectNormalizerContext(array|null|string $groups): array
-    {
-        return (new ObjectNormalizerContextBuilder())->withGroups($groups)->toArray();
-    }
-
-    /**
-     * @return JsonResponse
-     */
-    protected function shoppingCartNotFoundResponse(): JsonResponse
-    {
-        $notFound = Response::HTTP_NOT_FOUND;
-        return $this->json([
-            'status' => Response::$statusTexts[$notFound],
-            'msg' => 'shopping cart not found'
-        ], status: $notFound);
-    }
-
-    /**
-     * @param ORMException|\Exception|OptimisticLockException $e
-     * @return JsonResponse
-     */
-    protected function handleError(ORMException|\Exception|OptimisticLockException $e): JsonResponse
-    {
-        $errorStatusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
-
-        return $this->json([
-            'status' => Response::$statusTexts[$errorStatusCode],
-            'msg' => 'unable to find shopping cart',
-            'error' => $e->getMessage()
-        ], $errorStatusCode);
-    }
-
-    /**
-     * @return JsonResponse
-     */
-    protected function productNotFoundResponse(): JsonResponse
-    {
-        return $this->json([
-            'status' => Response::$statusTexts[Response::HTTP_NOT_FOUND],
-            'msg' => 'product not found'
-        ], Response::HTTP_NOT_FOUND);
-    }
-
-    protected function handleValidationErrors(ConstraintViolationListInterface $errors): JsonResponse
-    {
-        $data = [];
-        foreach ($errors as $error) {
-            $data[] = [
-                'property' => $error->getPropertyPath(),
-                'message' => $error->getMessage(),
-            ];
-        }
-
-        return $this->json([
-            'status' =>  Response::$statusTexts[Response::HTTP_BAD_REQUEST],
-            'message' => 'Validation failed',
-            'errors' => $data,
-        ], Response::HTTP_BAD_REQUEST);
     }
 }
