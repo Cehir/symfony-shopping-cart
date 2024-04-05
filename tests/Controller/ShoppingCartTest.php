@@ -280,7 +280,7 @@ class ShoppingCartTest extends ApiTestCase
         $shoppingCartId = $shoppingCart->getId()?->toRfc4122();
 
         $response = static::createClient()->request(
-            'PUT',
+            'PATCH',
             self::SHOPPING_CARTS_API_ENDPOINT . "/" . $shoppingCartId . '/products/' . $productId,
             ['body' => json_encode([
                 'name' => 'newName',
@@ -320,12 +320,12 @@ class ShoppingCartTest extends ApiTestCase
         $shoppingCartId = $shoppingCart->getId()?->toRfc4122();
 
         static::createClient()->request(
-            'PUT',
+            'PATCH',
             self::SHOPPING_CARTS_API_ENDPOINT . "/" . $shoppingCartId . '/products/' . $productId,
             ['body' => json_encode([
                 'product' => [
                     'name' => 'newName',
-                    'price' => 'newPrice',
+                    'price' => '22.22 EUR',
                 ]
             ])]
         );
@@ -333,6 +333,6 @@ class ShoppingCartTest extends ApiTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
 
         self::assertEquals('newName', $product->getName());
-        self::assertEquals('newPrice', $product->getPrice());
+        self::assertEquals('22.22 EUR', $product->getPrice());
     }
 }

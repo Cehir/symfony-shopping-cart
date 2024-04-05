@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Validator\Price;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -32,7 +33,7 @@ class ProductValidator
                     'price' => new Assert\Optional([
                         new Assert\NotNull(),
                         new Assert\Type('string'),
-                        new Assert\Length(min: 7, max: 10),
+                        new Price(),
                     ])
                 ])
             )

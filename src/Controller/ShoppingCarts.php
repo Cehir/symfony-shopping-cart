@@ -249,6 +249,7 @@ class ShoppingCarts extends AbstractController
      * @param string $id
      * @param string $productID
      * @param Request $request
+     * @param ProductValidator $validator
      * @return JsonResponse
      */
     #[Route(
@@ -258,7 +259,7 @@ class ShoppingCarts extends AbstractController
             'id' => Requirement::UID_RFC4122,
             'productID' => Requirement::UID_RFC4122,
         ],
-        methods: ['PUT']
+        methods: ['PATCH']
     )]
     public function editProduct(EntityManagerInterface $entityManager, string $id, string $productID, Request $request, ProductValidator $validator): JsonResponse
     {
