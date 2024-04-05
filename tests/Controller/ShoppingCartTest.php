@@ -311,7 +311,7 @@ class ShoppingCartTest extends ApiTestCase
     {
         $product = ProductFactory::createOne();
         $shoppingCart = ShoppingCartFactory::createOne();
-        ShoppingCartProductFactory::createOne([
+        $shoppingCartProduct = ShoppingCartProductFactory::createOne([
             'product' => $product,
             'shoppingCart' => $shoppingCart,
         ]);
@@ -323,6 +323,7 @@ class ShoppingCartTest extends ApiTestCase
             'PATCH',
             self::SHOPPING_CARTS_API_ENDPOINT . "/" . $shoppingCartId . '/products/' . $productId,
             ['body' => json_encode([
+                'amount' => 7,
                 'product' => [
                     'name' => 'newName',
                     'price' => '22.22 EUR',
@@ -330,9 +331,23 @@ class ShoppingCartTest extends ApiTestCase
             ])]
         );
 
+        //assert response
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        self::assertJsonContains([
+            'data' => [
+                [
+                    'amount' => 7,
+                    'product' => [
+                        'name' => 'newName',
+                        'price' => '22.22 EUR',
+                    ]
+                ]
+            ]
+        ]);
 
+        //assert db updates
         self::assertEquals('newName', $product->getName());
         self::assertEquals('22.22 EUR', $product->getPrice());
+        self::assertEquals(7, $shoppingCartProduct->getAmount());
     }
 }

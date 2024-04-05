@@ -8,6 +8,9 @@ use Symfony\Component\Validator\Constraints\Currency;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
+/**
+ * @extends ConstraintValidatorTestCase<PriceValidator>
+ */
 class PriceValidatorTest extends ConstraintValidatorTestCase
 {
     protected function createValidator(): ConstraintValidatorInterface

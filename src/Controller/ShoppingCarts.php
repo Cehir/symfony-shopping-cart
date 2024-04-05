@@ -265,6 +265,7 @@ class ShoppingCarts extends AbstractController
     {
         $requestData = $request->toArray();
 
+        //fetch storage errors
         try {
             /* @var ?ShoppingCart $shoppingCart */
             $shoppingCart = $entityManager->find(ShoppingCart::class, $id);
@@ -273,6 +274,7 @@ class ShoppingCarts extends AbstractController
             return $this->handleError($e);
         }
 
+        //validate input
         if ($shoppingCart === null) {
             return $this->shoppingCartNotFoundResponse();
         }
@@ -286,15 +288,21 @@ class ShoppingCarts extends AbstractController
             return $this->handleValidationErrors($errors);
         }
 
+
+        //patch data
         if (isset($requestData['product']['name'])) {
             $product->setName($requestData['product']['name']);
         }
         if (isset($requestData['product']['price'])) {
             $product->setPrice($requestData['product']['price']);
         }
+        if (isset($requestData['amount'])) {
+            $shoppingCart->setAmountOnProduct($requestData['amount'], $product);
+        }
 
         $entityManager->flush();
 
+        //return results
         /** @var ArrayCollection<int,ShoppingCartProduct> $products */
         $products = $shoppingCart->getShoppingCartItems();
         $data = [

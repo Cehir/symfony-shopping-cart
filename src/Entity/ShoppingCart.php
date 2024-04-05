@@ -97,4 +97,34 @@ class ShoppingCart extends AbstractEntity
 
         return null;
     }
+
+    /**
+     * @param int $amount
+     * @param Product $product
+     * @return ShoppingCartProduct|null if a ShoppingCartProduct is returned it should be deleted
+     */
+    public function setAmountOnProduct(int $amount, Product $product): ?ShoppingCartProduct
+    {
+        /** @var ArrayCollection<int, ShoppingCartProduct> $products */
+        $products = $this->shoppingCartItems;
+
+        // if there are no products, then there is nothing to update
+        if ($products->count() == 0) {
+            return null;
+        }
+
+        // find the ShoppingCartProducts instance with the matching product id
+        foreach ($products as $key => $shoppingCartProduct) {
+            if ($shoppingCartProduct->getProduct()->getId() === $product->getId()) {
+                $shoppingCartProduct->setAmount($amount);
+
+                if ($shoppingCartProduct->getAmount() <= 0) {
+                    $products->remove($key);
+                    return $shoppingCartProduct;
+                }
+            }
+        }
+
+        return null;
+    }
 }
