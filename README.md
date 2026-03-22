@@ -1,5 +1,7 @@
 # Symfony Docker
 
+[![gitcgr](https://gitcgr.com/badge/Cehir/symfony-shopping-cart.svg)](https://gitcgr.com/Cehir/symfony-shopping-cart)
+
 A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework,
 with [FrankenPHP](https://frankenphp.dev) and [Caddy](https://caddyserver.com/) inside!
 
