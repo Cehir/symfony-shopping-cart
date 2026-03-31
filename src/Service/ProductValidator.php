@@ -19,20 +19,20 @@ class ProductValidator
      */
     public function validateUpdate(mixed $productUpdateData): ConstraintViolationListInterface
     {
-        $constraint = new Assert\Collection([
+        $constraint = new Assert\Collection(fields: [
             'amount' => new Assert\Optional([
-                new Assert\Type('int'),
-                new Assert\Range(['min' => 1, 'max' => 10])
+                new Assert\Type(type: 'int'),
+                new Assert\Range(min: 1, max: 10)
             ]),
             'product' => new Assert\Optional(
-                new Assert\Collection([
+                new Assert\Collection(fields: [
                     'name' => new Assert\Optional([
-                        new Assert\Type('string'),
+                        new Assert\Type(type: 'string'),
                         new Assert\Length(min: 3, max: 50)
                     ]),
                     'price' => new Assert\Optional([
                         new Assert\NotNull(),
-                        new Assert\Type('string'),
+                        new Assert\Type(type: 'string'),
                         new Price(),
                     ])
                 ])
