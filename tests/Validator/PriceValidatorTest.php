@@ -34,9 +34,7 @@ final class PriceValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    /**
-     * @dataProvider provideInvalidConstraints
-     */
+    #[\PHPUnit\Framework\Attributes\DataProvider('provideInvalidConstraints')]
     public function testInvalidPrices(string $value, Price|Currency $constraint): void
     {
         $this->validator->validate($value, $constraint);
@@ -46,7 +44,7 @@ final class PriceValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    public function provideInvalidConstraints(): \Generator
+    public static function provideInvalidConstraints(): \Generator
     {
         yield ['some text' ,new Price(message: 'some error')];
         yield ['.22 EUR' ,new Price(message: 'some error')]; //missing leading number
