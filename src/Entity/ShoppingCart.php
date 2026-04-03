@@ -42,7 +42,6 @@ class ShoppingCart extends AbstractEntity
      * Adds a product to the list of products.
      *
      * @param Product $productToAdd The product to be added.
-     * @return void
      */
     public function addOneProduct(Product $productToAdd): void
     {
@@ -99,8 +98,6 @@ class ShoppingCart extends AbstractEntity
     }
 
     /**
-     * @param int $amount
-     * @param Product $product
      * @return ShoppingCartProduct|null if a ShoppingCartProduct is returned it should be deleted
      */
     public function setAmountOnProduct(int $amount, Product $product): ?ShoppingCartProduct

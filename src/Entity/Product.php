@@ -24,11 +24,11 @@ class Product extends AbstractEntity
         #[ORM\Column(type: "string", length: 255)]
         #[Assert\NotBlank(message: "Please enter a product name.")]
         #[Groups(["product:list", 'shop:item'])]
-        private string  $name,
+        private string               $name,
 
         #[ORM\Column(length: 32, nullable: true)]
         #[Groups(["product:list", "shop:item"])]
-        private ?string $price = null
+        private ?string              $price = null,
     )
     {
         parent::__construct();

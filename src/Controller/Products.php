@@ -15,7 +15,6 @@ class Products extends AbstractController
 {
     /**
      * @param ProductRepository<Product> $repository
-     * @return JsonResponse
      */
     #[Route(name: "collection")]
     function collection(ProductRepository $repository): JsonResponse

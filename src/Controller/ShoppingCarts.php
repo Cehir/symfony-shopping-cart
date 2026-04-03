@@ -60,7 +60,6 @@ class ShoppingCarts extends AbstractController
 
     /**
      * @param ShoppingCartRepository<ShoppingCart> $repository
-     * @return JsonResponse
      */
     #[Route(name: "create", methods: ['POST'])]
     public function create(ShoppingCartRepository $repository): JsonResponse
@@ -74,8 +73,6 @@ class ShoppingCarts extends AbstractController
 
     /**
      * @param ShoppingCartRepository<ShoppingCart> $repository
-     * @param string $id
-     * @return JsonResponse
      */
     #[Route('/{id}', name: "entity", requirements: ['id' => Requirement::UID_RFC4122], methods: ['GET'])]
     public function entity(ShoppingCartRepository $repository, string $id): JsonResponse
@@ -97,8 +94,6 @@ class ShoppingCarts extends AbstractController
 
     /**
      * @param ShoppingCartRepository<ShoppingCart> $repository
-     * @param string $id
-     * @return JsonResponse
      */
     #[Route('/{id}', name: "delete", requirements: ['id' => Requirement::UID_RFC4122], methods: ['DELETE'])]
     public function delete(ShoppingCartRepository $repository, string $id): JsonResponse
@@ -118,8 +113,6 @@ class ShoppingCarts extends AbstractController
 
     /**
      * @param ShoppingCartRepository<ShoppingCart> $repository
-     * @param string $id
-     * @return JsonResponse
      */
     #[Route('/{id}/products', name: 'products_collection', requirements: ['id' => Requirement::UID_RFC4122], methods: ['GET'])]
     public function shoppingCartProductsCollection(ShoppingCartRepository $repository, string $id): JsonResponse
@@ -142,11 +135,6 @@ class ShoppingCarts extends AbstractController
 
     /**
      * Add a Product and return the list of the currently assigned products
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param string $id
-     * @param string $productID
-     * @return JsonResponse
      */
     #[Route(
         '/{id}/products/{productID}',
@@ -189,11 +177,6 @@ class ShoppingCarts extends AbstractController
 
     /**
      * Remove one Product and return the list of the currently assigned products
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param string $id
-     * @param string $productID
-     * @return JsonResponse
      */
     #[Route(
         '/{id}/products/{productID}',
@@ -241,13 +224,6 @@ class ShoppingCarts extends AbstractController
 
     /**
      * Edit an ShoppingCartProduct
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param string $id
-     * @param string $productID
-     * @param Request $request
-     * @param ProductValidator $validator
-     * @return JsonResponse
      */
     #[Route(
         '/{id}/products/{productID}',

@@ -15,7 +15,6 @@ class ProductValidator
 
     /**
      * @param array<mixed> $productUpdateData
-     * @return ConstraintViolationListInterface
      */
     public function validateUpdate(mixed $productUpdateData): ConstraintViolationListInterface
     {

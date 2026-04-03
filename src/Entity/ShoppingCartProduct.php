@@ -58,10 +58,6 @@ class ShoppingCartProduct
         $this->amount = $amount;
     }
 
-    /**
-     * @param int $amount
-     * @return void
-     */
     public function increaseAmountBy(int $amount): void
     {
         if ($amount < 0) {

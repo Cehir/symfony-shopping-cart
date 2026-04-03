@@ -26,7 +26,7 @@ class PriceValidator extends ConstraintValidator
         }
 
         // format 0.00 AAA
-        if (preg_match('/^([0-9]+).[0-9]{2} [A-Z]{3}$/', $value, $matches)) {
+        if (preg_match('/^(\d+).\d{2} [A-Z]{3}$/', $value, $matches)) {
             return;
         }
 

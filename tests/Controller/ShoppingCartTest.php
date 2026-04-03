@@ -36,9 +36,6 @@ class ShoppingCartTest extends ApiTestCase
     }
 
     /**
-     * @param string $method
-     * @param string|null $subPath
-     * @return ResponseInterface
      * @throws TransportExceptionInterface
      */
     public static function request(string $method = 'GET', ?string $subPath = null): ResponseInterface
@@ -285,7 +282,7 @@ class ShoppingCartTest extends ApiTestCase
         $productId = $product->getId()?->toRfc4122();
         $shoppingCartId = $shoppingCart->getId()?->toRfc4122();
 
-        $response = static::createClient()->request(
+        static::createClient()->request(
             'PATCH',
             self::SHOPPING_CARTS_API_ENDPOINT . "/" . $shoppingCartId . '/products/' . $productId,
             ['body' => json_encode([

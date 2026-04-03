@@ -22,10 +22,6 @@ class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\Abst
         return (new ObjectNormalizerContextBuilder())->withGroups($groups)->toArray();
     }
 
-    /**
-     * @param ORMException|\Exception|OptimisticLockException $e
-     * @return JsonResponse
-     */
     protected function handleError(ORMException|\Exception|OptimisticLockException $e): JsonResponse
     {
         $errorStatusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
@@ -37,9 +33,6 @@ class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\Abst
         ], $errorStatusCode);
     }
 
-    /**
-     * @return JsonResponse
-     */
     protected function handleProductNotFound(): JsonResponse
     {
         return $this->json([
@@ -48,9 +41,6 @@ class AbstractController extends \Symfony\Bundle\FrameworkBundle\Controller\Abst
         ], Response::HTTP_NOT_FOUND);
     }
 
-    /**
-     * @return JsonResponse
-     */
     protected function handleShoppingCartNotFound(): JsonResponse
     {
         $notFound = Response::HTTP_NOT_FOUND;
