@@ -42,7 +42,7 @@ sh: ## Connect to the FrankenPHP container
 test: ## Start tests with phpunit, pass the parameter "c=" to add options to phpunit, example: make test c="--group e2e --stop-on-failure"
 	$(MAKE) up
 	@$(eval c ?=)
-	@$(DOCKER_COMP) exec -e APP_ENV=test php bin/phpunit $(c)
+	@$(DOCKER_COMP) exec -e APP_ENV=test php vendor/bin/phpunit $(c)
 
 phpstan: ## run codebase analysis, pass the parameter "c=" to add options to phpstan, example: c="analyse src test --level=6"
 	@$(eval c ?=)
