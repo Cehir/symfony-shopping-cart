@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\ShoppingCart;
-use App\Entity\ShoppingCartProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\Persistence\ManagerRegistry;
-use phpDocumentor\Reflection\Types\Collection;
-use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
