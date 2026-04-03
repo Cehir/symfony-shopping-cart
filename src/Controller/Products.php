@@ -31,7 +31,7 @@ class Products extends AbstractController
         ], context: $context);
     }
 
-    #[Route] #[Route("/{id}", name: "entity", requirements: ['id' => Requirement::UID_RFC4122])]
+    #[Route("/{id}", name: "entity", requirements: ['id' => Requirement::UID_RFC4122])]
     function entity(Product $product): JsonResponse
     {
         $context = (new ObjectNormalizerContextBuilder())->withGroups(['product:item'])->toArray();
