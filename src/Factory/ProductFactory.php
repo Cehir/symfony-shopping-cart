@@ -24,7 +24,7 @@ final class ProductFactory extends PersistentObjectFactory
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
      *
      */
-    protected function getDefaults(): array
+    private function getDefaults(): array
     {
         return [
             'name' => self::faker()->firstName(),
@@ -42,7 +42,7 @@ final class ProductFactory extends PersistentObjectFactory
         ;
     }
 
-    protected static function getClass(): string
+    private static function getClass(): string
     {
         return Product::class;
     }

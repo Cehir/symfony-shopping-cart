@@ -25,7 +25,7 @@ final class ShoppingCartProductFactory extends PersistentObjectFactory
      *
      * @todo add your default values here
      */
-    protected function getDefaults(): array
+    private function getDefaults(): array
     {
         return [
             'amount' => self::faker()->randomNumber(1),
@@ -42,7 +42,7 @@ final class ShoppingCartProductFactory extends PersistentObjectFactory
         ;
     }
 
-    protected static function getClass(): string
+    private static function getClass(): string
     {
         return ShoppingCartProduct::class;
     }

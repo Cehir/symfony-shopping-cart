@@ -20,17 +20,12 @@ final class ShoppingCartFactory extends PersistentObjectFactory
         parent::__construct();
     }
 
-    protected static function getClass(): string
-    {
-        return ShoppingCart::class;
-    }
-
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
      *
      * @todo add your default values here
      */
-    protected function getDefaults(): array
+    private function getDefaults(): array
     {
         return [
         ];
