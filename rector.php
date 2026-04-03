@@ -19,5 +19,6 @@ return RectorConfig::configure()
         strictBooleans: true,
         rectorPreset: true,
         phpunitCodeQuality: true,
+        doctrineCodeQuality: true,
     )
     ;

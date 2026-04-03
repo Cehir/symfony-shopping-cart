@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -24,7 +25,7 @@ class ShoppingCartProduct
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     protected Uuid $id;
 
-    #[ORM\Column(type: "datetime_immutable")]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[ORM\OrderBy(["createdAt" => "DESC"])]
     #[Context([DateTimeNormalizer::FORMAT_KEY => DateTimeInterface::RFC3339])]
     #[SerializedName("created_at")]

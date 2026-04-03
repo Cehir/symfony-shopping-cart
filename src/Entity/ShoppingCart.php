@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
 class ShoppingCart extends AbstractEntity
 {
     /**
-     * @var ShoppingCartProduct[]
+     * @var \Doctrine\Common\Collections\Collection<int, \App\Entity\ShoppingCartProduct>
      */
     #[ORM\OneToMany(targetEntity: ShoppingCartProduct::class, mappedBy: 'shoppingCart', cascade: ['persist', 'remove'])]
     #[ORM\Embedded]
