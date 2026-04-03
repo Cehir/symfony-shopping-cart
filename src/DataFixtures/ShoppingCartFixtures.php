@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use App\Entity\ShoppingCart;
 use App\Factory\ShoppingCartFactory;
-use DateTime;
-use DateTimeZone;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
