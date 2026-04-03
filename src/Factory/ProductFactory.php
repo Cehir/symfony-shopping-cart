@@ -7,7 +7,7 @@ namespace App\Factory;
 use App\Entity\Product;
 use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
-/*
+/**
  * @extends PersistentObjectFactory<Product>
  */
 final class ProductFactory extends PersistentObjectFactory
@@ -23,18 +23,6 @@ final class ProductFactory extends PersistentObjectFactory
     }
 
     /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     */
-    private function getDefaults(): array
-    {
-        return [
-            'name' => self::faker()->firstName(),
-            'price' => sprintf('%.2f EUR', self::faker()->randomFloat(2, 10, 1000))
-        ];
-    }
-
-    /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
      */
     protected function initialize(): static
@@ -44,18 +32,16 @@ final class ProductFactory extends PersistentObjectFactory
         ;
     }
 
-    private static function getClass(): string
-    {
-        return Product::class;
-    }
-
     protected function defaults(): array|callable
     {
-        return $this->getDefaults();
+        return [
+            'name' => self::faker()->firstName(),
+            'price' => sprintf('%.2f EUR', self::faker()->randomFloat(2, 10, 1000))
+        ];
     }
 
     public static function class(): string
     {
-        return self::getClass();
+        return Product::class;
     }
 }

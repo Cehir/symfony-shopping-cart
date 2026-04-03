@@ -11,7 +11,7 @@ class Price extends Constraint
 {
     public function __construct(
         public ?string $mode = 'strict',
-        public ?string $message = 'The string "{{ string }}" should be in the format of "0.00 EUR"',
+        public string $message = 'The string "{{ string }}" should be in the format of "0.00 EUR"',
         array|null $groups = null,
         mixed $payload = null)
     {

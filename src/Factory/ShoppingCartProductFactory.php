@@ -23,18 +23,6 @@ final class ShoppingCartProductFactory extends PersistentObjectFactory
     }
 
     /**
-     * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories
-     *
-     * @todo add your default values here
-     */
-    private function getDefaults(): array
-    {
-        return [
-            'amount' => self::faker()->randomNumber(1),
-        ];
-    }
-
-    /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
      */
     protected function initialize(): static
@@ -44,18 +32,15 @@ final class ShoppingCartProductFactory extends PersistentObjectFactory
         ;
     }
 
-    private static function getClass(): string
-    {
-        return ShoppingCartProduct::class;
-    }
-
     protected function defaults(): array|callable
     {
-        return $this->getDefaults();
+        return [
+            'amount' => self::faker()->randomNumber(1),
+        ];
     }
 
     public static function class(): string
     {
-        return self::getClass();
+        return ShoppingCartProduct::class;
     }
 }

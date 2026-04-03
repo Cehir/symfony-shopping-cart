@@ -8,7 +8,7 @@ PHP_CONT = $(DOCKER_COMP) exec php
 PHP      = $(PHP_CONT) php
 COMPOSER = $(PHP_CONT) composer
 SYMFONY  = $(PHP) bin/console
-PHPSTAN  = $(PHP) vendor/bin/phpstan
+PHPSTAN  = $(PHP) vendor/bin/phpstan --memory-limit=256M
 
 # Misc
 .DEFAULT_GOAL = help
