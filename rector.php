@@ -21,5 +21,6 @@ return RectorConfig::configure()
         phpunitCodeQuality: true,
         doctrineCodeQuality: true,
         symfonyCodeQuality: true,
+        twig: true,
     )
     ;
