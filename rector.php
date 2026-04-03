@@ -20,5 +20,6 @@ return RectorConfig::configure()
         rectorPreset: true,
         phpunitCodeQuality: true,
         doctrineCodeQuality: true,
+        symfonyCodeQuality: true,
     )
     ;
