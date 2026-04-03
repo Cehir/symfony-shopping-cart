@@ -123,10 +123,7 @@ final class ShoppingCartTest extends ApiTestCase
         $this->assertArrayHasKey("created_at", $responseData);
 
         // find in database
-        ShoppingCartFactory::assert()->exists([
-            'id' => $responseData['id'],
-            'createdAt' => new DateTimeImmutable($responseData['created_at']),
-        ]);
+        ShoppingCartFactory::assert()->exists(['id' => $responseData['id'], 'createdAt' => new DateTimeImmutable($responseData['created_at'])]);
     }
 
     /**
@@ -351,15 +348,8 @@ final class ShoppingCartTest extends ApiTestCase
             ]
         ]);
 
-        ProductFactory::assert()->exists(criteria: [
-            'id' => $productId,
-            'name' => 'newName',
-            'price' => '22.22 EUR',
-        ]);
+        ProductFactory::assert()->exists(criteria: ['id' => $productId, 'name' => 'newName', 'price' => '22.22 EUR']);
 
-        ShoppingCartProductFactory::assert()->exists(criteria: [
-            'id' => $shoppingCartProduct->getId(),
-            'amount' => 7,
-        ]);
+        ShoppingCartProductFactory::assert()->exists(criteria: ['id' => $shoppingCartProduct->getId(), 'amount' => 7]);
     }
 }

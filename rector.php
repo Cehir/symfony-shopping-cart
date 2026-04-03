@@ -24,4 +24,5 @@ return RectorConfig::configure()
         twig: true,
         phpunit: true,
     )
+    ->withFluentCallNewLine()
     ;
