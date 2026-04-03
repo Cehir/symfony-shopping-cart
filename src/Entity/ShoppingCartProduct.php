@@ -28,10 +28,10 @@ class ShoppingCartProduct
     #[SerializedName("created_at")]
     protected DateTimeImmutable $createdAt;
     public function __construct(
-        #[ORM\ManyToOne(inversedBy: 'shopping_cart_products')]
+        #[ORM\ManyToOne(inversedBy: 'shoppingCartItems')]
         protected ShoppingCart      $shoppingCart,
 
-        #[ORM\ManyToOne(inversedBy: 'shopping_cart_products')]
+        #[ORM\ManyToOne(inversedBy: 'shoppingCartProducts')]
         #[Groups(["shop:item"])]
         protected Product           $product,
 

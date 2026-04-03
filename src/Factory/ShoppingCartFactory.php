@@ -3,47 +3,12 @@
 namespace App\Factory;
 
 use App\Entity\ShoppingCart;
-use App\Repository\ShoppingCartRepository;
-use Zenstruck\Foundry\ModelFactory;
-use Zenstruck\Foundry\Proxy;
-use Zenstruck\Foundry\RepositoryProxy;
+use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 /**
- * @extends ModelFactory<ShoppingCart>
- *
- * @method        ShoppingCart|Proxy                     create(array|callable $attributes = [])
- * @method static ShoppingCart|Proxy                     createOne(array $attributes = [])
- * @method static ShoppingCart|Proxy                     find(object|array|mixed $criteria)
- * @method static ShoppingCart|Proxy                     findOrCreate(array $attributes)
- * @method static ShoppingCart|Proxy                     first(string $sortedField = 'id')
- * @method static ShoppingCart|Proxy                     last(string $sortedField = 'id')
- * @method static ShoppingCart|Proxy                     random(array $attributes = [])
- * @method static ShoppingCart|Proxy                     randomOrCreate(array $attributes = [])
- * @method static ShoppingCartRepository|RepositoryProxy repository()
- * @method static ShoppingCart[]|Proxy[]                 all()
- * @method static ShoppingCart[]|Proxy[]                 createMany(int $number, array|callable $attributes = [])
- * @method static ShoppingCart[]|Proxy[]                 createSequence(iterable|callable $sequence)
- * @method static ShoppingCart[]|Proxy[]                 findBy(array $attributes)
- * @method static ShoppingCart[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
- * @method static ShoppingCart[]|Proxy[]                 randomSet(int $number, array $attributes = [])
- *
- * @phpstan-method        Proxy<ShoppingCart> create(array|callable $attributes = [])
- * @phpstan-method static Proxy<ShoppingCart> createOne(array $attributes = [])
- * @phpstan-method static Proxy<ShoppingCart> find(object|array|mixed $criteria)
- * @phpstan-method static Proxy<ShoppingCart> findOrCreate(array $attributes)
- * @phpstan-method static Proxy<ShoppingCart> first(string $sortedField = 'id')
- * @phpstan-method static Proxy<ShoppingCart> last(string $sortedField = 'id')
- * @phpstan-method static Proxy<ShoppingCart> random(array $attributes = [])
- * @phpstan-method static Proxy<ShoppingCart> randomOrCreate(array $attributes = [])
- * @phpstan-method static RepositoryProxy<ShoppingCart> repository()
- * @phpstan-method static list<Proxy<ShoppingCart>> all()
- * @phpstan-method static list<Proxy<ShoppingCart>> createMany(int $number, array|callable $attributes = [])
- * @phpstan-method static list<Proxy<ShoppingCart>> createSequence(iterable|callable $sequence)
- * @phpstan-method static list<Proxy<ShoppingCart>> findBy(array $attributes)
- * @phpstan-method static list<Proxy<ShoppingCart>> randomRange(int $min, int $max, array $attributes = [])
- * @phpstan-method static list<Proxy<ShoppingCart>> randomSet(int $number, array $attributes = [])
+ * @extends PersistentObjectFactory<ShoppingCart>
  */
-final class ShoppingCartFactory extends ModelFactory
+final class ShoppingCartFactory extends PersistentObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -53,6 +18,11 @@ final class ShoppingCartFactory extends ModelFactory
     public function __construct()
     {
         parent::__construct();
+    }
+
+    protected static function getClass(): string
+    {
+        return ShoppingCart::class;
     }
 
     /**
@@ -69,13 +39,18 @@ final class ShoppingCartFactory extends ModelFactory
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
      */
-    protected function initialize(): self
+    protected function initialize(): static
     {
         return $this// ->afterInstantiate(function(ShoppingCart $shoppingCart): void {})
             ;
     }
 
-    protected static function getClass(): string
+    protected function defaults(): array|callable
+    {
+        return $this->getDefaults();
+    }
+
+    public static function class(): string
     {
         return ShoppingCart::class;
     }

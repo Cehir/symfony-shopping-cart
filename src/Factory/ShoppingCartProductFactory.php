@@ -3,47 +3,12 @@
 namespace App\Factory;
 
 use App\Entity\ShoppingCartProduct;
-use Doctrine\ORM\EntityRepository;
-use Zenstruck\Foundry\ModelFactory;
-use Zenstruck\Foundry\Proxy;
-use Zenstruck\Foundry\RepositoryProxy;
+use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 /**
- * @extends ModelFactory<ShoppingCartProduct>
- *
- * @method        ShoppingCartProduct|Proxy        create(array|callable $attributes = [])
- * @method static ShoppingCartProduct|Proxy        createOne(array $attributes = [])
- * @method static ShoppingCartProduct|Proxy        find(object|array|mixed $criteria)
- * @method static ShoppingCartProduct|Proxy        findOrCreate(array $attributes)
- * @method static ShoppingCartProduct|Proxy        first(string $sortedField = 'id')
- * @method static ShoppingCartProduct|Proxy        last(string $sortedField = 'id')
- * @method static ShoppingCartProduct|Proxy        random(array $attributes = [])
- * @method static ShoppingCartProduct|Proxy        randomOrCreate(array $attributes = [])
- * @method static EntityRepository|RepositoryProxy repository()
- * @method static ShoppingCartProduct[]|Proxy[]    all()
- * @method static ShoppingCartProduct[]|Proxy[]    createMany(int $number, array|callable $attributes = [])
- * @method static ShoppingCartProduct[]|Proxy[]    createSequence(iterable|callable $sequence)
- * @method static ShoppingCartProduct[]|Proxy[]    findBy(array $attributes)
- * @method static ShoppingCartProduct[]|Proxy[]    randomRange(int $min, int $max, array $attributes = [])
- * @method static ShoppingCartProduct[]|Proxy[]    randomSet(int $number, array $attributes = [])
- *
- * @phpstan-method        Proxy<ShoppingCartProduct> create(array|callable $attributes = [])
- * @phpstan-method static Proxy<ShoppingCartProduct> createOne(array $attributes = [])
- * @phpstan-method static Proxy<ShoppingCartProduct> find(object|array|mixed $criteria)
- * @phpstan-method static Proxy<ShoppingCartProduct> findOrCreate(array $attributes)
- * @phpstan-method static Proxy<ShoppingCartProduct> first(string $sortedField = 'id')
- * @phpstan-method static Proxy<ShoppingCartProduct> last(string $sortedField = 'id')
- * @phpstan-method static Proxy<ShoppingCartProduct> random(array $attributes = [])
- * @phpstan-method static Proxy<ShoppingCartProduct> randomOrCreate(array $attributes = [])
- * @phpstan-method static RepositoryProxy<ShoppingCartProduct> repository()
- * @phpstan-method static list<Proxy<ShoppingCartProduct>> all()
- * @phpstan-method static list<Proxy<ShoppingCartProduct>> createMany(int $number, array|callable $attributes = [])
- * @phpstan-method static list<Proxy<ShoppingCartProduct>> createSequence(iterable|callable $sequence)
- * @phpstan-method static list<Proxy<ShoppingCartProduct>> findBy(array $attributes)
- * @phpstan-method static list<Proxy<ShoppingCartProduct>> randomRange(int $min, int $max, array $attributes = [])
- * @phpstan-method static list<Proxy<ShoppingCartProduct>> randomSet(int $number, array $attributes = [])
+ * @extends PersistentObjectFactory<ShoppingCartProduct>
  */
-final class ShoppingCartProductFactory extends ModelFactory
+final class ShoppingCartProductFactory extends PersistentObjectFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services
@@ -70,7 +35,7 @@ final class ShoppingCartProductFactory extends ModelFactory
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#initialization
      */
-    protected function initialize(): self
+    protected function initialize(): static
     {
         return $this
             // ->afterInstantiate(function(ShoppingCartProduct $shoppingCartProduct): void {})
@@ -80,5 +45,15 @@ final class ShoppingCartProductFactory extends ModelFactory
     protected static function getClass(): string
     {
         return ShoppingCartProduct::class;
+    }
+
+    protected function defaults(): array|callable
+    {
+        return $this->getDefaults();
+    }
+
+    public static function class(): string
+    {
+        return self::getClass();
     }
 }

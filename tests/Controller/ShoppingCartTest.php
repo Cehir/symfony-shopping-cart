@@ -3,6 +3,7 @@
 namespace App\Tests\Controller;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
+use App\Entity\Product;
 use App\Factory\ProductFactory;
 use App\Factory\ShoppingCartFactory;
 
@@ -27,6 +28,11 @@ class ShoppingCartTest extends ApiTestCase
             'environment' => 'test',
             'debug' => false,
         ]);
+    }
+
+    protected function tearDown(): void
+    {
+        self::ensureKernelShutdown();
     }
 
     /**
@@ -309,6 +315,7 @@ class ShoppingCartTest extends ApiTestCase
      */
     public function testUpdateShoppingCartProduct(): void
     {
+        /** @var Product $product */
         $product = ProductFactory::createOne();
         $shoppingCart = ShoppingCartFactory::createOne();
         $shoppingCartProduct = ShoppingCartProductFactory::createOne([
@@ -345,9 +352,15 @@ class ShoppingCartTest extends ApiTestCase
             ]
         ]);
 
-        //assert db updates
-        self::assertEquals('newName', $product->getName());
-        self::assertEquals('22.22 EUR', $product->getPrice());
-        self::assertEquals(7, $shoppingCartProduct->getAmount());
+        ProductFactory::assert()->exists(criteria: [
+            'id' => $productId,
+            'name' => 'newName',
+            'price' => '22.22 EUR',
+        ]);
+
+        ShoppingCartProductFactory::assert()->exists(criteria: [
+            'id' => $shoppingCartProduct->getId(),
+            'amount' => 7,
+        ]);
     }
 }

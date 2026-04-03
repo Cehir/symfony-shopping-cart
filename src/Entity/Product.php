@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -12,6 +14,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Groups(["product:item"])]
 class Product extends AbstractEntity
 {
+    /**
+     * @var Collection<int, ShoppingCartProduct>
+     */
+    #[ORM\OneToMany(targetEntity: ShoppingCartProduct::class, mappedBy: 'product', cascade: ['refresh', 'persist', 'remove', 'detach'], orphanRemoval: true)]
+    private Collection $shoppingCartProducts;
+
     public function __construct(
         #[ORM\Column(type: "string", length: 255)]
         #[Assert\NotBlank(message: "Please enter a product name.")]
@@ -24,6 +32,7 @@ class Product extends AbstractEntity
     )
     {
         parent::__construct();
+        $this->shoppingCartProducts = new ArrayCollection();
     }
 
     public function getName(): string
@@ -47,5 +56,13 @@ class Product extends AbstractEntity
         $this->price = $price;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, ShoppingCartProduct>
+     */
+    public function getShoppingCartProducts(): Collection
+    {
+        return $this->shoppingCartProducts;
     }
 }
