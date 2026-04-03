@@ -1,5 +1,5 @@
 {
-    "api-platform/core": {
+    "api-platform/symfony": {
         "version": "3.4",
         "recipe": {
             "repo": "github.com/symfony/recipes",
