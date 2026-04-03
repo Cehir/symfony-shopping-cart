@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Service;
 
 use App\Service\ProductValidator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Validation;
 
-class ProductValidatorTest extends TestCase
+final class ProductValidatorTest extends TestCase
 {
     private ProductValidator|null $shoppingCartService = null;
 

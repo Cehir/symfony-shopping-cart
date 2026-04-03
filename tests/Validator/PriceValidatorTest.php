@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Validator;
 
 use App\Validator\Price;
@@ -11,7 +13,7 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 /**
  * @extends ConstraintValidatorTestCase<PriceValidator>
  */
-class PriceValidatorTest extends ConstraintValidatorTestCase
+final class PriceValidatorTest extends ConstraintValidatorTestCase
 {
     protected function createValidator(): ConstraintValidatorInterface
     {

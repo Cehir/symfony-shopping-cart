@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
@@ -18,7 +20,7 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
-class ShoppingCartTest extends ApiTestCase
+final class ShoppingCartTest extends ApiTestCase
 {
     protected const string SHOPPING_CARTS_API_ENDPOINT = '/api/v1/shopping_carts';
 
