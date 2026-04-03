@@ -205,8 +205,8 @@ final class ShoppingCartTest extends ApiTestCase
         $this->assertEquals($secondProduct->getId(), $shoppingCartProducts[1]->getProduct()->getId());
 
         //the amount of the first product should be two and for the second 1
-        $this->assertEquals(2, $shoppingCartProducts[0]->getAmount());
-        $this->assertEquals(1, $shoppingCartProducts[1]->getAmount());
+        $this->assertSame(2, $shoppingCartProducts[0]->getAmount());
+        $this->assertSame(1, $shoppingCartProducts[1]->getAmount());
     }
 
     /**
@@ -233,7 +233,7 @@ final class ShoppingCartTest extends ApiTestCase
         self::request('DELETE', $shoppingCartId . '/products/' . $productId);
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
 
-        self::assertJsonContains([
+        $this->assertJsonContains([
             'results' => 1,
             'data' => [
                 [
@@ -249,7 +249,7 @@ final class ShoppingCartTest extends ApiTestCase
         self::request('DELETE', $shoppingCartId . '/products/' . $productId);
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
 
-        self::assertJsonContains([
+        $this->assertJsonContains([
             'results' => 0,
             'data' => [],
         ]);
@@ -339,7 +339,7 @@ final class ShoppingCartTest extends ApiTestCase
 
         //assert response
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        self::assertJsonContains([
+        $this->assertJsonContains([
             'data' => [
                 [
                     'amount' => 7,

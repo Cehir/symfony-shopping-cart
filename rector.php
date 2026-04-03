@@ -17,6 +17,7 @@ return RectorConfig::configure()
         instanceOf: true,
         earlyReturn: true,
         strictBooleans: true,
-        rectorPreset: true
+        rectorPreset: true,
+        phpunitCodeQuality: true,
     )
     ;
